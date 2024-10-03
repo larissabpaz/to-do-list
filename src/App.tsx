@@ -9,9 +9,9 @@ export default function App() {
     <>
     <Router>
       <Routes>
-        <Route path="/signup" element={<SignUp />} />
+        <Route path="/cadastrar" element={<SignUp />} />
         <Route path="/" element={<Login />} />
-        <Route path="/tasks" element={<ToDoListComponent />} />
+        <Route path="/tarefas" element={<ToDoListComponent />} />
       </Routes>
     </Router>
     </>
