@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Typography, TextField, Button, Card, Checkbox, Divider, FormControl, FormControlLabel, FormLabel, Link } from "@mui/material";
 import { Box, Container } from "@mui/system";
-import { GoogleIcon, PlaylistAddCheckIcon } from '../Icons/CustomIcons';
+import { GoogleIcon } from '../Icons/CustomIcons';
 import ForgotPassword from './ForgotPassword';
+import { useNavigate } from 'react-router-dom';
+import InventorySharpIcon from '@mui/icons-material/InventorySharp';
 
 export default function Login() {
     const [emailError, setEmailError] = useState(false);
@@ -10,6 +12,7 @@ export default function Login() {
     const [passwordError, setPasswordError] = useState(false);
     const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
     const [open, setOpen] = useState(false);
+    const navigate = useNavigate();
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -21,15 +24,20 @@ export default function Login() {
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         if (emailError || passwordError) {
-        event.preventDefault();
-        return;
+            event.preventDefault();
+          return;
         }
-        const data = new FormData(event.currentTarget);
-        console.log({
-        email: data.get('email'),
-        password: data.get('password'),
-        });
-    };
+    
+        if (validateInputs()) {
+          const data = new FormData(event.currentTarget);
+          console.log({
+            email: data.get('gmail'),
+            password: data.get('pasWord'),
+            });
+    
+          navigate('/tarefas');
+        }
+      };
 
     const validateInputs = () => {
         const email = document.getElementById('email') as HTMLInputElement;
@@ -72,10 +80,22 @@ export default function Login() {
             }}
         >
             <Card variant="outlined" sx={{ padding: 4, maxWidth: '90%', minWidth: 300 }}>
-                <Typography color="primary" sx={{ width: '100%', fontSize: '24px' }}>
-                    <PlaylistAddCheckIcon/>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        height: '10vh',
+                    }}
+                    >
+                    <InventorySharpIcon
+                        sx={{ fontSize: 50, color: '#510c76' }}
+                    />
+                    <Typography color="primary" sx={{ width: '100%', fontSize: '24px' }}>
                     Acesse Seu Gerenciador de Tarefas
-                </Typography>
+                    </Typography>
+                </Box>
                 <Box
                     component="form"
                     onSubmit={handleSubmit}

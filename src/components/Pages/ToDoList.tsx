@@ -8,7 +8,7 @@ interface Task {
     title: string;
     description: string;
     priority: string;
-    status: 'Tarefa' | 'Em Progresso' | 'Feito';
+    status: 'Tarefas' | 'Em Progresso' | 'Feito';
 }
 
 export default function ToDoListComponent() {
@@ -16,7 +16,7 @@ export default function ToDoListComponent() {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [priority, setPriority] = useState('');
-    const [status, setStatus] = useState<'Tarefa' | 'Em Progresso' | 'Feito'>('Tarefa');
+    const [status, setStatus] = useState<'Tarefas' | 'Em Progresso' | 'Feito'>('Tarefas');
     const [editTaskId, setEditTaskId] = useState<number | null>(null);
 
     const handleAddTask = () => {
@@ -37,7 +37,7 @@ export default function ToDoListComponent() {
         setTitle('');
         setDescription('');
         setPriority('');
-        setStatus('Tarefa');
+        setStatus('Tarefas');
     };
 
     const handleEditTask = (task: Task) => {
@@ -92,7 +92,6 @@ export default function ToDoListComponent() {
                         displayEmpty
                         renderValue={priority ? undefined : () => <em>Prioridade</em>}
                         margin="dense"
-                        sx={{ marginBottom: "4%" }}
                     >
                         <MenuItem value="Baixa">Baixa</MenuItem>
                         <MenuItem value="Média">Média</MenuItem>
@@ -100,13 +99,14 @@ export default function ToDoListComponent() {
                     </Select>
                     <Select
                         value={status}
-                        onChange={e => setStatus(e.target.value as 'Tarefa' | 'Em Progresso' | 'Feito')}
+                        onChange={e => setStatus(e.target.value as 'Tarefas' | 'Em Progresso' | 'Feito')}
+                        displayEmpty
                         margin="dense"
                         renderValue={priority ? undefined : () => <em>Progresso da Tarefa</em>}
                     >
-                        <MenuItem value="To Do">A Fazer</MenuItem>
-                        <MenuItem value="In Progress">Em Andamento</MenuItem>
-                        <MenuItem value="Done">Concluído</MenuItem>
+                        <MenuItem value="Tarefas">A Fazer</MenuItem>
+                        <MenuItem value="Em Progresso">Em Andamento</MenuItem>
+                        <MenuItem value="Feito">Concluído</MenuItem>
                     </Select>
                 </Box>
                 <Button variant="contained" color="primary" onClick={handleAddTask}>

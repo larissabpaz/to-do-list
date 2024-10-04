@@ -1,7 +1,8 @@
 import React, { useState }  from 'react';
 import { Typography, TextField, Button, Card, FormControl, Link, Divider } from "@mui/material";
 import { Container, Box } from "@mui/system";
-import { GoogleIcon, PlaylistAddCheckIcon } from '../Icons/CustomIcons';
+import { GoogleIcon } from '../Icons/CustomIcons';
+import InventorySharpIcon from '@mui/icons-material/InventorySharp';
 
 export default function SignUp() {
   const [name, setName] = useState('');
@@ -78,10 +79,20 @@ export default function SignUp() {
           maxWidth: '90%',
       }}>
         <Card variant="outlined" sx={{ padding: 4, maxWidth: '90%', minWidth: 300 }}>
-            <Typography sx={{ width: '100%', fontSize: '24px' }} color="primary">
-            <PlaylistAddCheckIcon/>
-              Cadastre-se
-            </Typography>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '10vh',
+                }}
+            >
+              <InventorySharpIcon sx={{ fontSize: 50, color: '#510c76' }} />
+              <Typography color="primary" sx={{fontSize: '24px', justifyContent: 'center' }}>
+                Cadastre-se 
+              </Typography>
+            </Box>
             <Box
                     component="form"
                     onSubmit={handleSubmit}

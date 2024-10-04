@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { ThemeProvider } from '@emotion/react';
-import { CssBaseline } from '@mui/material';
+import { CssBaseline, GlobalStyles } from '@mui/material';
 import theme from './theme';
 
 const root = ReactDOM.createRoot(
@@ -14,6 +14,17 @@ root.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
     <CssBaseline />
+    <GlobalStyles
+        styles={{
+          body: {
+            backgroundImage: 'url("/desktopWeGen.svg")', 
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+            minHeight: '80vh',
+          },
+        }}
+      />
     <App />
   </ThemeProvider>,
   </React.StrictMode>
