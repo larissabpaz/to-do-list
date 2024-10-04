@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Typography, TextField, Button, Card, Checkbox, Divider, FormControl, FormControlLabel, FormLabel, Link } from "@mui/material";
+import { Typography, TextField, Button, Card, Checkbox, Divider, FormControl, FormControlLabel, Link } from "@mui/material";
 import { Box, Container } from "@mui/system";
 import { GoogleIcon } from '../Icons/CustomIcons';
 import ForgotPassword from './ForgotPassword';
@@ -87,6 +87,7 @@ export default function Login() {
                         justifyContent: 'center',
                         alignItems: 'center',
                         height: '10vh',
+                        marginBottom:'8px'
                     }}
                     >
                     <InventorySharpIcon
@@ -108,8 +109,8 @@ export default function Login() {
                     }}
                 >
                     <FormControl>
-                    <FormLabel htmlFor="email">E-mail</FormLabel>
                     <TextField
+                        label='E-mail'
                         error={emailError}
                         helperText={emailErrorMessage}
                         id="email"
@@ -123,11 +124,11 @@ export default function Login() {
                         variant="outlined"
                         color={emailError ? 'error' : 'primary'}
                         sx={{ ariaLabel: 'email' }}
+                        size='small'
                     />
                     </FormControl>
                     <FormControl>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <FormLabel htmlFor="password">Senha</FormLabel>
                         <Link
                         component="button"
                         type="button"
@@ -139,6 +140,7 @@ export default function Login() {
                         </Link>
                     </Box>
                     <TextField
+                        label='Senha'
                         error={passwordError}
                         helperText={passwordErrorMessage}
                         name="password"
@@ -151,6 +153,7 @@ export default function Login() {
                         fullWidth
                         variant="outlined"
                         color={passwordError ? 'error' : 'primary'}
+                        size='small'
                     />
                     </FormControl>
                     <FormControlLabel

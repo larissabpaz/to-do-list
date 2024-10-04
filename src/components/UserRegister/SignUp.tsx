@@ -3,16 +3,18 @@ import { Typography, TextField, Button, Card, FormControl, Link, Divider } from 
 import { Container, Box } from "@mui/system";
 import { GoogleIcon } from '../Icons/CustomIcons';
 import InventorySharpIcon from '@mui/icons-material/InventorySharp';
+import { useNavigate } from 'react-router-dom';
 
 export default function SignUp() {
-  const [name, setName] = useState('');
-  const [emailError, setEmailError] = useState(false);
+    const [name, setName] = useState('');
+    const [emailError, setEmailError] = useState(false);
     const [emailErrorMessage, setEmailErrorMessage] = useState('');
     const [passwordError, setPasswordError] = useState(false);
     const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
     const [nameError, setNameError] = useState(false);
     const [nameErrorMessage, setNameErrorMessage] = useState('');
-
+    const navigate = useNavigate();
+    
     const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       const inputValue = event.target.value;
       setName(inputValue);
@@ -37,34 +39,49 @@ export default function SignUp() {
       email: data.get('email'),
       password: data.get('password'),
       });
-  };
+    };
 
-  const validateInputs = () => {
-    const email = document.getElementById('email') as HTMLInputElement;
-    const password = document.getElementById('password') as HTMLInputElement;
+    const validateInputs = () => {
+      const email = document.getElementById('email') as HTMLInputElement;
+      const password = document.getElementById('password') as HTMLInputElement;
+      const name = document.getElementById('name') as HTMLInputElement; 
 
-    let isValid = true;
+      let isValid = true;
 
-    if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
-    setEmailError(true);
-    setEmailErrorMessage('Por favor digite um e-mail válido.');
-    isValid = false;
-    } else {
-    setEmailError(false);
-    setEmailErrorMessage('');
-    }
+      if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
+      setEmailError(true);
+      setEmailErrorMessage('Por favor digite um e-mail válido.');
+      isValid = false;
+      } else {
+      setEmailError(false);
+      setEmailErrorMessage('');
+      }
 
-    if (!password.value || password.value.length < 6) {
-    setPasswordError(true);
-    setPasswordErrorMessage('A senha deve conter pelo menos 6 dígitos');
-    isValid = false;
-    } else {
-    setPasswordError(false);
-    setPasswordErrorMessage('');
-    }
+      if (!password.value || password.value.length < 6) {
+      setPasswordError(true);
+      setPasswordErrorMessage('A senha deve conter pelo menos 6 dígitos');
+      isValid = false;
+      } else {
+      setPasswordError(false);
+      setPasswordErrorMessage('');
+      }
 
-    return isValid;
-};
+      if (!name.value || name.value.length < 10) {
+        setNameError(true);
+        setNameErrorMessage('Digite seu nome completo.');
+        isValid = false;
+        } else {
+        setNameError(false);
+        setNameErrorMessage('');
+      }
+
+      if (isValid) {
+        navigate('/tarefas');
+      }
+
+      return isValid;
+    };
+
     return (
         <Container 
         maxWidth="sm" 
@@ -86,10 +103,11 @@ export default function SignUp() {
                 justifyContent: 'center',
                 alignItems: 'center',
                 height: '10vh',
+                marginBottom:'8px' 
                 }}
             >
               <InventorySharpIcon sx={{ fontSize: 50, color: '#510c76' }} />
-              <Typography color="primary" sx={{fontSize: '24px', justifyContent: 'center' }}>
+              <Typography color="primary" sx={{fontSize: '24px', justifyContent: 'center'}}>
                 Cadastre-se 
               </Typography>
             </Box>
@@ -119,6 +137,8 @@ export default function SignUp() {
                         color={nameError ? 'error' : 'primary'}
                         value={name}
                         onChange={handleNameChange}
+                        size='small'
+                        label='Nome Completo'
                     />
                     </FormControl>
                     <FormControl>
@@ -136,6 +156,8 @@ export default function SignUp() {
                         variant="outlined"
                         color={emailError ? 'error' : 'primary'}
                         sx={{ ariaLabel: 'email' }}
+                        size='small'
+                        label='E-mail'
                     />
                     </FormControl>
                     <FormControl>
@@ -152,6 +174,8 @@ export default function SignUp() {
                         fullWidth
                         variant="outlined"
                         color={passwordError ? 'error' : 'primary'}
+                        size='small'
+                        label='Senha'
                     />
                     </FormControl>
                     
