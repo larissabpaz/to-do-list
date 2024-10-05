@@ -109,9 +109,16 @@ export default function ToDoListComponent() {
                                 <Typography >{column}</Typography>
                                 <Box>
                                     {tasks.filter(task => task.status === column).map(task => (
-                                        <Paper 
+                                        <Paper
                                             key={task.id} 
-                                            style={{ margin: '2px', padding: '12px', width: '100%', height: '100%', overflow: 'auto' }}
+                                            style={{ 
+                                                margin: '2px', 
+                                                padding: '12px', 
+                                                width: '100%', 
+                                                height: '100%', 
+                                                overflow: 'auto',  
+                                                backgroundColor: task.priority === 'Alta' ? '#ffd3d3' : task.priority === 'Média' ? '#E6E6FA' : '#fff'
+                                            }}
                                         >
                                             <Typography variant="h6">{task.title}</Typography>
                                             <Typography color="textSecondary">{task.description}</Typography>

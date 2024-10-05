@@ -19,7 +19,6 @@ export default function App() {
             </>
           ) : (
             <>
-            <Route path="/tarefas" element={<ToDoListComponent />} />
               <Route path="/cadastrar" element={<SignUp />} />
               <Route path="/" element={<Login />} />
             </>

@@ -1,5 +1,6 @@
-import React from 'react';
-import { Box, TextField, Select, MenuItem, Button } from '@mui/material';
+import React, { useState } from 'react';
+import { Box, TextField, Select, MenuItem, Button, Chip, Tooltip } from '@mui/material';
+import AddCommentOutlinedIcon from '@mui/icons-material/AddCommentOutlined';
 
 interface TaskFormProps {
     title: string;
@@ -26,6 +27,22 @@ export default function TaskForm ({
     onSubmit,
     isEditMode
 } :TaskFormProps) {
+    const [categories, setCategories] = useState<string[]>([]);
+    const [categoryInput, setCategoryInput] = useState('');
+
+    const predefinedCategories = ['Manutenção', 'Desenvolvimento', 'Reunião'];
+
+    const handleAddCategory = () => {
+        if (categoryInput && !categories.includes(categoryInput)) {
+            setCategories([...categories, categoryInput]);
+            setCategoryInput('');
+        }
+    };
+
+    const handleDeleteCategory = (categoryToDelete: string) => {
+        setCategories(categories.filter(category => category !== categoryToDelete));
+    };
+
     return (
         <Box display="flex" flexDirection="column" gap="20px">
             <TextField
@@ -63,6 +80,47 @@ export default function TaskForm ({
                 <MenuItem value="Em Progresso">Em Andamento</MenuItem>
                 <MenuItem value="Feito">Concluído</MenuItem>
             </Select>
+            <Box display="flex" flexWrap="wrap" gap="10px">
+                {predefinedCategories.map(category => (
+                    <Chip
+                        key={category}
+                        label={category}
+                        color="primary"
+                        variant="outlined"
+                        onClick={() => {
+                            if (!categories.includes(category)) {
+                                setCategories([...categories, category]);
+                            }
+                        }}
+                    />
+                ))}
+            </Box>
+
+            <Box display="flex" gap="10px">
+                <TextField
+                    label="Nova Categoria"
+                    value={categoryInput}
+                    onChange={e => setCategoryInput(e.target.value)}
+                    size="small"
+                />
+                <Tooltip title="Adicionar" arrow>
+                <Button variant="contained" color="primary" onClick={handleAddCategory}>
+                    <AddCommentOutlinedIcon/>
+                </Button>
+                </Tooltip>
+            </Box>
+
+            <Box display="flex" flexWrap="wrap" gap="4px">
+                {categories.map(category => (
+                    <Chip
+                        key={category}
+                        label={category}
+                        color="primary"
+                        onDelete={() => handleDeleteCategory(category)}
+                    />
+                ))}
+            </Box>
+            
             <Button variant="contained" color="primary" onClick={onSubmit}>
                 {isEditMode ? 'Atualizar Tarefa' : 'Adicionar Tarefa'}
             </Button>

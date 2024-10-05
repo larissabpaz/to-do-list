@@ -27,7 +27,6 @@ export default function TaskModal({ open, onClose, title, children }: TaskModalP
                     p: 4,
                     boxShadow: 24,
                     borderRadius: 2,
-                    
                 }}
                 onClick={handleBackdropClick}
             >
