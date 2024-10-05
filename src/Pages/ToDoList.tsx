@@ -1,5 +1,5 @@
 import React from 'react';
-import { Paper, Typography, Button, Tooltip } from "@mui/material";
+import { Paper, Typography, Button, Tooltip, MenuItem, Select, Chip } from "@mui/material";
 import { Container, Box } from "@mui/system";
 import { useState } from "react";
 import TaskForm from '../components/Tasks/TaskForm';
@@ -8,6 +8,7 @@ import EmptyState from '../components/EmptyState';
 import ContentPasteOffOutlinedIcon from '@mui/icons-material/ContentPasteOffOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import FilterListOutlinedIcon from '@mui/icons-material/FilterListOutlined';
 
 interface Task {
     id: number;
@@ -15,6 +16,7 @@ interface Task {
     description: string;
     priority: string;
     status: 'Tarefas' | 'Em Progresso' | 'Feito';
+    categories: string[];
 }
 
 export default function ToDoListComponent() {
@@ -25,17 +27,20 @@ export default function ToDoListComponent() {
     const [status, setStatus] = useState<'Tarefas' | 'Em Progresso' | 'Feito'>('Tarefas');
     const [editTaskId, setEditTaskId] = useState<number | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [categories, setCategories] = useState<string[]>([]);    
+    const [priorityFilter, setPriorityFilter] = useState(''); 
+    const [categoryFilter, setCategoryFilter] = useState('');
 
     const handleAddTask = () => {
         if (editTaskId !== null) {
             setTasks(
                 tasks.map(task => 
-                    task.id === editTaskId ? { ...task, title, description, priority, status } : task
+                    task.id === editTaskId ? { ...task, title, description, priority, status, categories } : task
                 )
             );
             setEditTaskId(null);
         } else {
-            setTasks([...tasks, { id: Date.now(), title, description, priority, status }]);
+            setTasks([...tasks, { id: Date.now(), title, description, priority, status, categories }]);
         }
         clearFields();
         setIsModalOpen(false);
@@ -46,6 +51,7 @@ export default function ToDoListComponent() {
         setDescription('');
         setPriority('');
         setStatus('Tarefas');
+        setCategories([]);
     };
 
     const handleEditTask = (task: Task) => {
@@ -53,6 +59,7 @@ export default function ToDoListComponent() {
         setDescription(task.description);
         setPriority(task.priority);
         setStatus(task.status);
+        setCategories(task.categories);
         setEditTaskId(task.id);
         setIsModalOpen(true);
     };
@@ -63,7 +70,13 @@ export default function ToDoListComponent() {
 
     const columns = ['Tarefas', 'Em Progresso', 'Feito'];
 
-    const hasTasks = tasks.length > 0;
+    const filteredTasks = tasks.filter(task => {
+        const matchesPriority = priorityFilter ? task.priority === priorityFilter : true;
+        const matchesCategory = categoryFilter ? task.categories.includes(categoryFilter) : true;
+        return matchesPriority && matchesCategory;
+    });
+
+    const hasTasks = filteredTasks.length > 0;
 
     return (
         <Container  
@@ -79,9 +92,44 @@ export default function ToDoListComponent() {
         }}>
             <Paper elevation={3} sx={{ padding: 4, maxWidth: '90%', minWidth: 300, height: '100%'  }}>
                 <Typography variant="h4" color="primary" gutterBottom>Gerenciador de Tarefas</Typography>
+                <Box display="flex" gap="20px" mb={2}>
                 <Button variant="contained" color="primary" onClick={() => setIsModalOpen(true)}>
                     Adicionar Tarefa
                 </Button>
+
+                <Select
+                    value={priorityFilter || categoryFilter}
+                    onChange={e => {
+                        const selectedValue = e.target.value;
+                        if (["Baixa", "Média", "Alta"].includes(selectedValue)) {
+                            setPriorityFilter(selectedValue);
+                            setCategoryFilter(''); 
+                        } else {
+                            setCategoryFilter(selectedValue);
+                            setPriorityFilter(''); 
+                        }
+                    }}
+                    renderValue={(selected) => {
+                        if (!selected) {
+                            return <span><FilterListOutlinedIcon /></span>; 
+                        }
+                        return <span>{selected}</span>;
+                    }}
+                    displayEmpty
+                    size="small"
+                >
+                    <MenuItem value="">Todas as Tarefas</MenuItem>
+                    <MenuItem value="Baixa">Baixa</MenuItem>
+                    <MenuItem value="Média">Média</MenuItem>
+                    <MenuItem value="Alta">Alta</MenuItem>
+                    <MenuItem value="Manutenção">Manutenção</MenuItem>
+                    {Array.from(new Set(tasks.flatMap(task => task.categories))).map(category => (
+                        <MenuItem key={category} value={category}>
+                            {category}
+                        </MenuItem>
+                    ))}
+                </Select>
+                </Box>
                 
                 <TaskModal 
                     open={isModalOpen} 
@@ -93,9 +141,11 @@ export default function ToDoListComponent() {
                         description={description}
                         priority={priority}
                         status={status}
+                        categories={categories}
                         setTitle={setTitle}
                         setDescription={setDescription}
                         setPriority={setPriority}
+                        setCategories={setCategories}
                         setStatus={setStatus}
                         onSubmit={handleAddTask}
                         isEditMode={editTaskId !== null}
@@ -122,6 +172,11 @@ export default function ToDoListComponent() {
                                         >
                                             <Typography variant="h6">{task.title}</Typography>
                                             <Typography color="textSecondary">{task.description}</Typography>
+                                            <Box display="flex" flexWrap="wrap" gap="10px">
+                                                    {task.categories.map(category => (
+                                                        <Chip key={category} label={category} color="primary" />
+                                                    ))}
+                                            </Box>
                                             <Box mt={2} display="flex" justifyContent="space-between">
                                                 <Tooltip title="Editar" arrow>
                                                 <Button onClick={() => handleEditTask(task)}>

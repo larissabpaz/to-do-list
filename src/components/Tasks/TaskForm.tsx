@@ -7,10 +7,12 @@ interface TaskFormProps {
     description: string;
     priority: string;
     status: 'Tarefas' | 'Em Progresso' | 'Feito';
+    categories: string[];
     setTitle: (value: string) => void;
     setDescription: (value: string) => void;
     setPriority: (value: string) => void;
     setStatus: (value: 'Tarefas' | 'Em Progresso' | 'Feito') => void;
+    setCategories: (value: string[]) => void;
     onSubmit: () => void;
     isEditMode: boolean;
 }
@@ -98,7 +100,7 @@ export default function TaskForm ({
 
             <Box display="flex" gap="10px">
                 <TextField
-                    label="Nova Categoria"
+                    label="Outra Categoria"
                     value={categoryInput}
                     onChange={e => setCategoryInput(e.target.value)}
                     size="small"

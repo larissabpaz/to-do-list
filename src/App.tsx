@@ -19,6 +19,7 @@ export default function App() {
             </>
           ) : (
             <>
+                        <Route path="/tarefas" element={<ToDoListComponent />} /> {/* Preciso retirar essa parte*/}
               <Route path="/cadastrar" element={<SignUp />} />
               <Route path="/" element={<Login />} />
             </>
